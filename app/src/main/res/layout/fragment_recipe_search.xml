@@ -13,6 +13,9 @@
 
     <EditText
         android:id="@+id/recipe_search_query"
+        android:imeOptions="actionSearch"
+        android:inputType="text"
+        android:maxLines="1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
