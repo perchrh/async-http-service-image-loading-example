@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">Recipe search</string>
     <string name="action_settings">Settings</string>
+    <string name="recipe_image_description">Recipe image</string>
+    <string name="recipe_search_submit">Search</string>
+    <string name="query_field_hint">search for a recipe</string>
 </resources>

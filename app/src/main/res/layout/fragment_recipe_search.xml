@@ -11,9 +11,19 @@
     tools:context="org.digitalsprouts.recipesearch.RecipeSearchActivityFragment"
     tools:showIn="@layout/activity_recipe_search">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <EditText
+        android:id="@+id/recipe_search_query"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Hello World!" />
+        android:layout_alignParentTop="true"
+        android:hint="@string/query_field_hint" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recipe_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@id/recipe_search_query"
+        android:layout_marginTop="15dp"
+        android:scrollbars="vertical" />
 
 </RelativeLayout>
