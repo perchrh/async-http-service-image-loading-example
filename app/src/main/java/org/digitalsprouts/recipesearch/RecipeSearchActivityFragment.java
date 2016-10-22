@@ -73,6 +73,7 @@ public class RecipeSearchActivityFragment extends Fragment {
         queryInputView = (EditText) rootView.findViewById(R.id.recipe_search_query);
         queryInputView.setImeActionLabel(getString(R.string.recipe_search_submit), KeyEvent.KEYCODE_ENTER);
         queryInputView.setOnEditorActionListener(submitQueryListener);
+        queryInputView.setText("chicken"); // FIXME DEBUG
 
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recipe_recycler_view);
         recyclerView.setHasFixedSize(true);

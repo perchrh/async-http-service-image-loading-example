@@ -33,8 +33,15 @@ public class PicassoImageLoader implements ImageLoader {
     @Override
     public void loadImageAsync(@NonNull String url, @NonNull ImageView target, @DrawableRes int placeHolder) {
         picasso.load(url).
-                resize(120, 60). // TODO magic constant
-                placeholder(placeHolder). //TODO placeholder could be optional
+                placeholder(placeHolder).
+                into(target);
+    }
+
+    @Override
+    public void loadImageAsync(@NonNull String url, @NonNull ImageView target, @DrawableRes int placeHolder, int targetWidth, int targetHeight) {
+        picasso.load(url).
+                resize(targetWidth, targetHeight).
+                placeholder(placeHolder).
                 into(target);
     }
 }

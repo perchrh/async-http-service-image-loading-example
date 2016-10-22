@@ -6,11 +6,11 @@ import android.support.annotation.NonNull;
 
 import org.digitalsprouts.recipesearchclient.model.Recipe;
 
-public class StartRecipeDetailActivityIntent extends Intent {
+class StartRecipeDetailActivityIntent extends Intent {
 
-    public static final String EXTRA_KEY_RECIPE_ITEM = "EXTRA_KEY_RECIPE_ITEM";
+    static final String EXTRA_KEY_RECIPE_ITEM = "EXTRA_KEY_RECIPE_ITEM";
 
-    public StartRecipeDetailActivityIntent(@NonNull Context context, @NonNull Recipe detailItem) {
+    StartRecipeDetailActivityIntent(@NonNull Context context, @NonNull Recipe detailItem) {
         super(context, RecipeDetailActivity.class);
         putExtra(EXTRA_KEY_RECIPE_ITEM, detailItem);
     }

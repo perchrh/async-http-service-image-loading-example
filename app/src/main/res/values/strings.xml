@@ -5,4 +5,10 @@
     <string name="recipe_search_submit">Search</string>
     <string name="query_field_hint">search for a recipe</string>
     <string name="title_activity_recipe_detail">Recipe detail</string>
+    <string name="social_media_rank_format">Social rank: %.2f</string>
+    <string name="ingredients">Ingredients</string>
+    <string name="info">Info</string>
+    <string name="view_instructions">View instructions</string>
+    <string name="view_original">View original</string>
+
 </resources>

@@ -40,7 +40,8 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Vi
         String thumbnailUrl = recipes.get(position).getThumbnailUrl();
         imageLoader.loadImageAsync(thumbnailUrl,
                 viewHolder.recipeThumbnailImage,
-                R.drawable.recipe_placeholder);
+                R.drawable.recipe_placeholder,
+                120, 60);
 
         viewHolder.bind(recipe, clickListener);
     }
