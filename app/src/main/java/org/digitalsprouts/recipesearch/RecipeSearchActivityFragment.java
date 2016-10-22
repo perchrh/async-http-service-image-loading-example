@@ -47,6 +47,9 @@ public class RecipeSearchActivityFragment extends Fragment {
         }
     };
 
+    private RecipeSearchClient searchServiceClient;
+    private RecipeListAdapter recipeListadapter;
+
     private TextView.OnEditorActionListener submitQueryListener = new TextView.OnEditorActionListener() {
         @Override
         public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -58,8 +61,6 @@ public class RecipeSearchActivityFragment extends Fragment {
             return false;
         }
     };
-    private RecipeSearchClient searchServiceClient;
-    private RecipeListAdapter recipeListadapter;
 
     public RecipeSearchActivityFragment() {
         // required fragment constructor
@@ -78,7 +79,6 @@ public class RecipeSearchActivityFragment extends Fragment {
         queryInputView = (EditText) rootView.findViewById(R.id.recipe_search_query);
         queryInputView.setImeActionLabel(getString(R.string.recipe_search_submit), KeyEvent.KEYCODE_ENTER);
         queryInputView.setOnEditorActionListener(submitQueryListener);
-        queryInputView.setText("chicken"); // FIXME DEBUG
 
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recipe_recycler_view);
         recyclerView.setHasFixedSize(true);
@@ -151,6 +151,7 @@ public class RecipeSearchActivityFragment extends Fragment {
         if (recipeListadapter != null) {
             // We were re-attached after initial create
             recipeListadapter.setImageLoader(imageLoader);
+            // TODO see if this state-management cannot be removed after a redesign
         }
     }
 

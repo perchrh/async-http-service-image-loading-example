@@ -5,8 +5,6 @@ import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.util.List;
-
 public class Recipe implements Parcelable {
 
     @SerializedName("image_url")

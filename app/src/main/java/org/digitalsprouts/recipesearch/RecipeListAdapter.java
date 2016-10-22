@@ -14,8 +14,8 @@ import java.util.List;
 
 class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.ViewHolder> {
     private final List<Recipe> recipes;
-    private ImageLoader imageLoader;
     private final OnRecipeRowClickListener clickListener;
+    private ImageLoader imageLoader;
 
     RecipeListAdapter(ImageLoader imageLoader, List<Recipe> recipes, OnRecipeRowClickListener clickListener) {
         this.recipes = recipes;

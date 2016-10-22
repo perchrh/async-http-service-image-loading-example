@@ -1,17 +1,11 @@
 package org.digitalsprouts.recipesearchclient;
 
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import org.digitalsprouts.recipesearchclient.model.RecipeSearchResponse;
 import org.digitalsprouts.recipesearchclient.service.RecipeSearchService;
 
-import java.io.IOException;
-
-import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
-import okhttp3.Response;
-import okhttp3.ResponseBody;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Callback;
 import retrofit2.Retrofit;
@@ -23,17 +17,6 @@ public class RecipeSearchClient {
     private final Retrofit retroFit;
     private final String apiKey;
     private final RecipeSearchService service;
-
-    public enum SortMode {
-        RANK("r"),
-        TREND("t");
-
-        final String sortSpec;
-
-        SortMode(final String sortSpec) {
-            this.sortSpec = sortSpec;
-        }
-    }
 
     public RecipeSearchClient(@NonNull final String apiKey) {
         this.apiKey = apiKey;
@@ -65,6 +48,17 @@ public class RecipeSearchClient {
                 .addConverterFactory(GsonConverterFactory.create());
 
         return builder.build();
+    }
+
+    public enum SortMode {
+        RANK("r"),
+        TREND("t");
+
+        final String sortSpec;
+
+        SortMode(final String sortSpec) {
+            this.sortSpec = sortSpec;
+        }
     }
 
 }
