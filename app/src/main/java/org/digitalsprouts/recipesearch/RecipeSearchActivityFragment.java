@@ -1,5 +1,6 @@
 package org.digitalsprouts.recipesearch;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,9 +15,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import org.digitalsprouts.recipesearch.imageloader.ImageLoader;
@@ -42,7 +41,11 @@ public class RecipeSearchActivityFragment extends Fragment {
     private OnRecipeRowClickListener clickListener = new OnRecipeRowClickListener() {
         @Override
         public void onItemClick(Recipe item) {
-            Intent showRecipeDetails = new StartRecipeDetailActivityIntent(getContext(), item);
+            Context context = getActivity();
+            if (context == null) {
+                return;
+            }
+            Intent showRecipeDetails = new StartRecipeDetailActivityIntent(context, item);
             startActivity(showRecipeDetails);
         }
     };
@@ -50,10 +53,10 @@ public class RecipeSearchActivityFragment extends Fragment {
     private RecipeSearchClient searchServiceClient;
     private RecipeListAdapter recipeListadapter;
 
-    private TextView.OnEditorActionListener submitQueryListener = new TextView.OnEditorActionListener() {
+    private View.OnKeyListener submitQueryListener = new View.OnKeyListener(){
         @Override
-        public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+        public boolean onKey(View v, int keyCode, KeyEvent event) {
+            if(event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
                 String queryString = queryInputView.getText().toString();
                 submitSearch(queryString);
                 return true;
@@ -78,7 +81,7 @@ public class RecipeSearchActivityFragment extends Fragment {
     private void initViews(final View rootView) {
         queryInputView = (EditText) rootView.findViewById(R.id.recipe_search_query);
         queryInputView.setImeActionLabel(getString(R.string.recipe_search_submit), KeyEvent.KEYCODE_ENTER);
-        queryInputView.setOnEditorActionListener(submitQueryListener);
+        queryInputView.setOnKeyListener(submitQueryListener); //using keyListener to support submit by enter OR action search
 
         recyclerView = (RecyclerView) rootView.findViewById(R.id.recipe_recycler_view);
         recyclerView.setHasFixedSize(true);
@@ -96,7 +99,7 @@ public class RecipeSearchActivityFragment extends Fragment {
         }
         // TODO Could check network connectivity before searching
 
-        Toast.makeText(getContext(), "I'm searching for : " + queryString, Toast.LENGTH_LONG).show();
+        // TODO show spinner/shutter
 
         searchServiceClient.searchForRecipes(queryString, new Callback<RecipeSearchResponse>() {
 
@@ -125,7 +128,9 @@ public class RecipeSearchActivityFragment extends Fragment {
             private void reportSearchError(String message) {
                 // TODO a production app would have more customer friendly error handling, perhaps retry requests,
                 // errors could be logged remotely, Crashlytics etc
-                Toast.makeText(getContext(), "Search failure:\n" + message, Toast.LENGTH_LONG).show();
+                if (getActivity() != null) {
+                    Toast.makeText(getActivity(), "Search failure:\n" + message, Toast.LENGTH_LONG).show();
+                }
             }
         });
     }
@@ -143,10 +148,10 @@ public class RecipeSearchActivityFragment extends Fragment {
     }
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
+    public void onAttach(Activity context) {
+        super.onAttach(context); // used for compatibility with API < 23
 
-        // When the context changes, we must re-create the ImageLoader
+        // When the context changes, we must re-create the ImageLoader with the new context
         imageLoader = createDownloader(context);
         if (recipeListadapter != null) {
             // We were re-attached after initial create
