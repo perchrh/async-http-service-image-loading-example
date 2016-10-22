@@ -51,7 +51,7 @@ public class RecipeDetailActivity extends AppCompatActivity {
 
         ListView ingredientList = (ListView) findViewById(R.id.ingredient_list);
         // dummy data because all data from server have empty ingredients list..
-        List<String> ingredients = Arrays.asList(new String[]{"Thyme", "Coriander", "Chicken", "Cream"});
+        List<String> ingredients = Arrays.asList("Thyme", "Coriander", "Chicken", "Cream", "Lemon");
         ingredientList.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, ingredients));
 
         Button showInstructions = (Button) findViewById(R.id.showInstructionButton);
@@ -78,10 +78,8 @@ public class RecipeDetailActivity extends AppCompatActivity {
         TextView socialMediaRank = (TextView) findViewById(R.id.social_media_rank);
         Double socialRank = model.getSocialRank();
         if (socialRank != null) {
-            socialMediaRank.setText(String.format(Locale.US,
-                    getString(R.string.social_media_rank_format), socialRank));
+            socialMediaRank.setText(String.format(Locale.US, getString(R.string.social_media_rank_format), socialRank));
         }
-
 
     }
 

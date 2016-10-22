@@ -2,6 +2,6 @@ package org.digitalsprouts.recipesearch;
 
 import org.digitalsprouts.recipesearchclient.model.Recipe;
 
-public interface OnRecipeRowClickListener {
+interface OnRecipeRowClickListener {
     void onItemClick(Recipe item);
 }

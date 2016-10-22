@@ -5,6 +5,8 @@ import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 public class Recipe implements Parcelable {
 
     @SerializedName("image_url")
@@ -27,6 +29,11 @@ public class Recipe implements Parcelable {
 
     @SerializedName("social_rank")
     private Double socialRank; // The Social Ranking of the Recipe (As determined by our Ranking Algorithm), max = 100
+
+    // The docs say there is a 'ingredients' field, but it never appears in data, and the format is not documented
+    // Don't attempt to read the unknown data
+    //@SerializedName("ingredients")
+    //private List<String> ingredients; // The ingredients of this recipe
 
     // Generated getters
 
