@@ -1,7 +1,9 @@
 package org.digitalsprouts.recipesearch;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,9 +19,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.digitalsprouts.recipesearch.imageloader.ImageLoader;
 import org.digitalsprouts.recipesearch.imageloader.PicassoImageLoader;
-import org.digitalsprouts.recipesearchclient.*;
 import org.digitalsprouts.recipesearchclient.BuildConfig;
+import org.digitalsprouts.recipesearchclient.RecipeSearchClient;
 import org.digitalsprouts.recipesearchclient.model.Recipe;
 import org.digitalsprouts.recipesearchclient.model.RecipeSearchResponse;
 
@@ -34,6 +37,7 @@ public class RecipeSearchActivityFragment extends Fragment {
     private static final String TAG = "RecipeListActivity";
     private EditText queryInputView;
     private RecyclerView recyclerView;
+    private ImageLoader imageLoader;
 
     private OnRecipeRowClickListener clickListener = new OnRecipeRowClickListener() {
         @Override
@@ -95,6 +99,7 @@ public class RecipeSearchActivityFragment extends Fragment {
         Toast.makeText(getContext(), "I'm searching for : " + queryString, Toast.LENGTH_LONG).show();
 
         searchServiceClient.searchForRecipes(queryString, new Callback<RecipeSearchResponse>() {
+
             @Override
             public void onResponse(Call<RecipeSearchResponse> call, Response<RecipeSearchResponse> response) {
                 if (!response.isSuccessful()) {
@@ -107,10 +112,7 @@ public class RecipeSearchActivityFragment extends Fragment {
             }
 
             private void setRecipeDataFromResponse(final List<Recipe> recipeData) {
-                // FIXME when activity is disconnect, set adapter to null
-                // FIXME when activity is reconnected, create it again (new context)
-
-                recipeListadapter = new RecipeListAdapter(new PicassoImageLoader(getContext()), recipeData, clickListener);
+                recipeListadapter = new RecipeListAdapter(imageLoader, recipeData, clickListener);
                 recyclerView.setAdapter(recipeListadapter);
             }
 
@@ -128,11 +130,37 @@ public class RecipeSearchActivityFragment extends Fragment {
         });
     }
 
+    @NonNull
+    private ImageLoader createDownloader(Context context) {
+        return new PicassoImageLoader(context);
+    }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         this.searchServiceClient = new RecipeSearchClient(BuildConfig.F2F_API_KEY);
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        // When the context changes, we must re-create the ImageLoader
+        imageLoader = createDownloader(context);
+        if (recipeListadapter != null) {
+            // We were re-attached after initial create
+            recipeListadapter.setImageLoader(imageLoader);
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+
+        // Make sure we clear away the no longer valid context
+        imageLoader = null;
+        recipeListadapter.setImageLoader(null);
     }
 
 }

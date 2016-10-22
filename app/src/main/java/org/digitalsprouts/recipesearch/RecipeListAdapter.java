@@ -6,19 +6,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.digitalsprouts.recipesearch.imageloader.ImageLoader;
 import org.digitalsprouts.recipesearchclient.model.Recipe;
 
 import java.util.List;
 
-public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.ViewHolder> {
+class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.ViewHolder> {
     private final List<Recipe> recipes;
-    private final ImageLoader imageLoader;
+    private ImageLoader imageLoader;
     private final OnRecipeRowClickListener clickListener;
 
-    public RecipeListAdapter(ImageLoader imageLoader, List<Recipe> recipes, OnRecipeRowClickListener clickListener) {
+    RecipeListAdapter(ImageLoader imageLoader, List<Recipe> recipes, OnRecipeRowClickListener clickListener) {
         this.recipes = recipes;
         this.imageLoader = imageLoader;
         this.clickListener = clickListener;
@@ -38,17 +37,22 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Vi
         viewHolder.recipeText.setText(title);
 
         String thumbnailUrl = recipes.get(position).getThumbnailUrl();
-        imageLoader.loadImageAsync(thumbnailUrl,
-                viewHolder.recipeThumbnailImage,
-                R.drawable.recipe_placeholder,
-                120, 60);
-
+        if (imageLoader != null) {
+            imageLoader.loadImageAsync(thumbnailUrl,
+                    viewHolder.recipeThumbnailImage,
+                    R.drawable.recipe_placeholder,
+                    120, 60);
+        }
         viewHolder.bind(recipe, clickListener);
     }
 
     @Override
     public int getItemCount() {
         return recipes.size();
+    }
+
+    void setImageLoader(ImageLoader imageLoader) {
+        this.imageLoader = imageLoader;
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
@@ -63,9 +67,10 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Vi
 
         }
 
-        public void bind(final Recipe item, final OnRecipeRowClickListener listener) {
+        void bind(final Recipe item, final OnRecipeRowClickListener listener) {
             itemView.setOnClickListener(new View.OnClickListener() {
-                @Override public void onClick(View v) {
+                @Override
+                public void onClick(View v) {
                     listener.onItemClick(item);
                 }
             });
