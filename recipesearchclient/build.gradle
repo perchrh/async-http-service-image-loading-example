@@ -1,5 +1,17 @@
 apply plugin: 'com.android.library'
 
+
+ext {
+    def apiKeyParameter = "com.food2fork.apikey"
+
+    if (!project.hasProperty(apiKeyParameter)) {
+        throw new InvalidUserDataException("Must specify value for " + apiKeyParameter + " as a parameter or in \$HOME/gradle.properties")
+    }
+
+    apiKey = project.getProperty(apiKeyParameter)
+}
+
+
 android {
     compileSdkVersion 24
     buildToolsVersion "24.0.2"
@@ -9,6 +21,8 @@ android {
         targetSdkVersion 24
         versionCode 1
         versionName "1.0"
+
+        buildConfigField 'String', 'F2F_API_KEY', apiKey // avoids storing api key in git
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 

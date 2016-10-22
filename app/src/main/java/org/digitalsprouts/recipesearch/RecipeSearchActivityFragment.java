@@ -18,7 +18,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.digitalsprouts.recipesearch.imageloader.PicassoImageLoader;
-import org.digitalsprouts.recipesearchclient.RecipeSearchClient;
+import org.digitalsprouts.recipesearchclient.*;
+import org.digitalsprouts.recipesearchclient.BuildConfig;
 import org.digitalsprouts.recipesearchclient.model.Recipe;
 import org.digitalsprouts.recipesearchclient.model.RecipeSearchResponse;
 
@@ -131,7 +132,7 @@ public class RecipeSearchActivityFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        this.searchServiceClient = new RecipeSearchClient(getString(R.string.food2fork_api_key));
+        this.searchServiceClient = new RecipeSearchClient(BuildConfig.F2F_API_KEY);
     }
 
 }
