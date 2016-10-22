@@ -4,4 +4,5 @@
     <string name="recipe_image_description">Recipe image</string>
     <string name="recipe_search_submit">Search</string>
     <string name="query_field_hint">search for a recipe</string>
+    <string name="title_activity_recipe_detail">Recipe detail</string>
 </resources>
