@@ -37,6 +37,7 @@ public class RecipeSearchActivityFragment extends Fragment {
     private EditText queryInputView;
     private RecyclerView recyclerView;
     private ImageLoader imageLoader;
+    private View busyIndicator;
 
     private OnRecipeRowClickListener clickListener = new OnRecipeRowClickListener() {
         @Override
@@ -53,10 +54,10 @@ public class RecipeSearchActivityFragment extends Fragment {
     private RecipeSearchClient searchServiceClient;
     private RecipeListAdapter recipeListadapter;
 
-    private View.OnKeyListener submitQueryListener = new View.OnKeyListener(){
+    private View.OnKeyListener submitQueryListener = new View.OnKeyListener() {
         @Override
         public boolean onKey(View v, int keyCode, KeyEvent event) {
-            if(event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
+            if (event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
                 String queryString = queryInputView.getText().toString();
                 submitSearch(queryString);
                 return true;
@@ -79,6 +80,8 @@ public class RecipeSearchActivityFragment extends Fragment {
     }
 
     private void initViews(final View rootView) {
+        busyIndicator = rootView.findViewById(R.id.busy_indicator);
+
         queryInputView = (EditText) rootView.findViewById(R.id.recipe_search_query);
         queryInputView.setImeActionLabel(getString(R.string.recipe_search_submit), KeyEvent.KEYCODE_ENTER);
         queryInputView.setOnKeyListener(submitQueryListener); //using keyListener to support submit by enter OR action search
@@ -99,7 +102,7 @@ public class RecipeSearchActivityFragment extends Fragment {
         }
         // TODO Could check network connectivity before searching
 
-        // TODO show spinner/shutter
+        busyIndicator.setVisibility(View.VISIBLE);
 
         searchServiceClient.searchForRecipes(queryString, new Callback<RecipeSearchResponse>() {
 
@@ -107,11 +110,14 @@ public class RecipeSearchActivityFragment extends Fragment {
             public void onResponse(Call<RecipeSearchResponse> call, Response<RecipeSearchResponse> response) {
                 if (!response.isSuccessful()) {
                     reportSearchError("Server returned an error");
+
                     Log.e(TAG, String.format("Error response in recipe search: %1$s (%2$d)", response.message(), response.code()));
                     return;
                 }
 
                 setRecipeDataFromResponse(response.body().getRecipes());
+
+                busyIndicator.setVisibility(View.GONE);
             }
 
             private void setRecipeDataFromResponse(final List<Recipe> recipeData) {
@@ -121,6 +127,8 @@ public class RecipeSearchActivityFragment extends Fragment {
 
             @Override
             public void onFailure(Call<RecipeSearchResponse> call, Throwable t) {
+                busyIndicator.setVisibility(View.GONE);
+
                 reportSearchError(t.getMessage());
                 Log.e(TAG, "Recipe search error", t);
             }
