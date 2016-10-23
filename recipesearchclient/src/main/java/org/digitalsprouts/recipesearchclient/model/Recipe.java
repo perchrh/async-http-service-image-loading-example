@@ -35,20 +35,8 @@ public class Recipe implements Parcelable {
 
     // Generated getters
 
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
     public String getThumbnailUrl() {
         return thumbnailUrl;
-    }
-
-    public void setThumbnailUrl(String thumbnailUrl) {
-        this.thumbnailUrl = thumbnailUrl;
     }
 
     public String getSourceUrl() {
@@ -57,6 +45,10 @@ public class Recipe implements Parcelable {
 
     public String getRecipeUrl() {
         return recipeUrl;
+    }
+
+    public String getTitle() {
+        return title;
     }
 
     public String getPublisher() {
@@ -70,6 +62,63 @@ public class Recipe implements Parcelable {
     public Double getSocialRank() {
         return socialRank;
     }
+
+    // Generated setters, used for tests
+
+    void setThumbnailUrl(String thumbnailUrl) {
+        this.thumbnailUrl = thumbnailUrl;
+    }
+
+    void setSourceUrl(String sourceUrl) {
+        this.sourceUrl = sourceUrl;
+    }
+
+    void setRecipeUrl(String recipeUrl) {
+        this.recipeUrl = recipeUrl;
+    }
+
+    void setTitle(String title) {
+        this.title = title;
+    }
+
+    void setPublisher(String publisher) {
+        this.publisher = publisher;
+    }
+
+    void setPublisherUrl(String publisherUrl) {
+        this.publisherUrl = publisherUrl;
+    }
+
+    void setSocialRank(Double socialRank) {
+        this.socialRank = socialRank;
+    }
+
+    // Generated HashCode and equal
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Recipe recipe = (Recipe) o;
+
+        if (thumbnailUrl != null ? !thumbnailUrl.equals(recipe.thumbnailUrl) : recipe.thumbnailUrl != null)
+            return false;
+        if (sourceUrl != null ? !sourceUrl.equals(recipe.sourceUrl) : recipe.sourceUrl != null) return false;
+        if (!recipeUrl.equals(recipe.recipeUrl)) return false;
+        if (!title.equals(recipe.title)) return false;
+        if (publisher != null ? !publisher.equals(recipe.publisher) : recipe.publisher != null) return false;
+        if (publisherUrl != null ? !publisherUrl.equals(recipe.publisherUrl) : recipe.publisherUrl != null)
+            return false;
+        return socialRank != null ? socialRank.equals(recipe.socialRank) : recipe.socialRank == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        return recipeUrl.hashCode();
+    }
+
 
     // Generated Parcelable implementation
 
