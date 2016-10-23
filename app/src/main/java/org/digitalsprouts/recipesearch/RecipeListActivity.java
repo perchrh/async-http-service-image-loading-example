@@ -79,12 +79,14 @@ public class RecipeListActivity extends AppCompatActivity {
 
         recipeListLoader = new RecipeListLoader(this, recyclerView, busyIndicator, clickListener, recipeData);
 
-        // Could add endless scrolling, using pagination
-        // recyclerView.addOnScrollListener
+        // Review: Could add endless scrolling, using pagination
+        // and recyclerView.addOnScrollListener
         // http://stackoverflow.com/questions/26543131/how-to-implement-endless-list-with-recyclerview
     }
 
     private void submitSearch(final String queryString) {
+        // Review: Could check network connectivity before searching
+
         recipeListLoader.loadRecipeList(queryString); // updates 'recipeData'
     }
 

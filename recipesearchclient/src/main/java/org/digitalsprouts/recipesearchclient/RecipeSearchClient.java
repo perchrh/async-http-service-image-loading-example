@@ -12,15 +12,13 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RecipeSearchClient {
-    private static final String TAG = "RecipeSearchClient";
     private static final String BASE_URL = "http://food2fork.com/api/";
-    private final Retrofit retroFit;
     private final String apiKey;
     private final RecipeSearchService service;
 
     public RecipeSearchClient(@NonNull final String apiKey) {
         this.apiKey = apiKey;
-        this.retroFit = createRetrofitService();
+        Retrofit retroFit = createRetrofitService();
         this.service = retroFit.create(RecipeSearchService.class);
     }
 
@@ -29,8 +27,8 @@ public class RecipeSearchClient {
      *
      * @param queryTerm the query to search for
      * @param callback  the callback to execute when the results are ready or an error occurs
-     * @TODO Selecting a sort mode for search is not implemented
-     * @TODO Pagination is not supported
+     *                  Review: Selecting a sort mode for search is not implemented
+     *                  Review: Pagination is not supported
      */
     public void searchForRecipes(@NonNull String queryTerm, @NonNull Callback<RecipeSearchResponse> callback) {
         service.queryByString(apiKey, queryTerm, SortMode.RANK.sortSpec, null).enqueue(callback);
@@ -50,7 +48,7 @@ public class RecipeSearchClient {
         return builder.build();
     }
 
-    public enum SortMode {
+    private enum SortMode {
         RANK("r"),
         TREND("t");
 

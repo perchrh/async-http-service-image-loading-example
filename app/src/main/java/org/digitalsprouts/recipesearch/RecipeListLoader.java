@@ -8,13 +8,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
-import org.digitalsprouts.recipesearch.imageloader.ImageLoader;
 import org.digitalsprouts.recipesearch.imageloader.PicassoImageLoader;
 import org.digitalsprouts.recipesearchclient.RecipeSearchClient;
 import org.digitalsprouts.recipesearchclient.model.Recipe;
 import org.digitalsprouts.recipesearchclient.model.RecipeSearchResponse;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -25,34 +24,30 @@ import static org.digitalsprouts.recipesearchclient.BuildConfig.F2F_API_KEY;
 class RecipeListLoader {
 
     private final View busyIndicator;
-    private final RecyclerView recyclerView;
     private final RecipeSearchClient searchServiceClient;
-    private final ImageLoader imageLoader;
     private final Context context;
     private RecipeListAdapter recipeListadapter;
-    private final OnRecipeRowClickListener clickListener;
-    private ArrayList<Recipe> recipeData;
+    private List<Recipe> recipeData;
     private static final String TAG = "RecipeListLoader";
 
-    RecipeListLoader(Context context, RecyclerView recyclerView, @NonNull View busyIndicator, @NonNull OnRecipeRowClickListener clickListener, @NonNull ArrayList<Recipe> recipeData) {
-        this.recyclerView = recyclerView;
+    RecipeListLoader(@NonNull Context context, @NonNull RecyclerView recyclerView, @NonNull View busyIndicator, @NonNull OnRecipeRowClickListener clickListener, @NonNull List<Recipe> recipeData) {
         this.busyIndicator = busyIndicator;
         this.searchServiceClient = new RecipeSearchClient(F2F_API_KEY);
-        this.clickListener = clickListener;
         this.recipeData = recipeData;
         this.context = context;
 
-        this.imageLoader = new PicassoImageLoader(context);
-        this.recipeListadapter = new RecipeListAdapter(imageLoader, this.recipeData, clickListener);
+        this.recipeListadapter = new RecipeListAdapter(new PicassoImageLoader(context), this.recipeData, clickListener);
 
         recyclerView.setAdapter(recipeListadapter);
     }
 
-    void loadRecipeList(@NonNull String queryString) {
+    /*
+    Loads a new recipe list from the network, based on the query string
+     */
+    void loadRecipeList(String queryString) {
         if (TextUtils.isEmpty(queryString)) {
             return;
         }
-        // Could check network connectivity before searching
 
         busyIndicator.setVisibility(View.VISIBLE);
 
@@ -60,6 +55,8 @@ class RecipeListLoader {
 
             @Override
             public void onResponse(Call<RecipeSearchResponse> call, Response<RecipeSearchResponse> response) {
+                busyIndicator.setVisibility(View.GONE);
+
                 if (!response.isSuccessful()) {
                     reportSearchError("Server returned an error");
 
@@ -68,8 +65,6 @@ class RecipeListLoader {
                 }
 
                 setRecipeDataFromResponse(response.body().getRecipes());
-
-                busyIndicator.setVisibility(View.GONE);
             }
 
             @Override
@@ -83,12 +78,11 @@ class RecipeListLoader {
         });
     }
 
-    private void setRecipeDataFromResponse(final ArrayList<Recipe> recipeList) {
-        this.recipeData.clear();
-        this.recipeData.addAll(recipeList);
+    private void setRecipeDataFromResponse(final List<Recipe> recipeList) {
+        recipeData.clear();
+        recipeData.addAll(recipeList);
 
-        this.recipeListadapter = new RecipeListAdapter(imageLoader, recipeData, clickListener);
-        this.recyclerView.setAdapter(recipeListadapter);
+        recipeListadapter.notifyDataSetChanged();
     }
 
     private void reportSearchError(final String message) {
