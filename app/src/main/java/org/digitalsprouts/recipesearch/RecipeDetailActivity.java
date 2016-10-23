@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -29,10 +30,6 @@ public class RecipeDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe_detail);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         imageLoader = new PicassoImageLoader(this);
         model = getIntent().getParcelableExtra(StartRecipeDetailActivityIntent.EXTRA_KEY_RECIPE_ITEM);
@@ -41,6 +38,11 @@ public class RecipeDetailActivity extends AppCompatActivity {
     }
 
     private void initViews() {
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         setTitle(model.getTitle());
 
         ImageView image = (ImageView) findViewById(R.id.image);
@@ -81,6 +83,18 @@ public class RecipeDetailActivity extends AppCompatActivity {
             socialMediaRank.setText(String.format(Locale.US, getString(R.string.social_media_rank_format), socialRank));
         }
 
+    }
+
+    // Make the 'home' button send the 'back' signal
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
 }

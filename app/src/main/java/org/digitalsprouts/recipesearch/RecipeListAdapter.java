@@ -15,7 +15,7 @@ import java.util.List;
 class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.ViewHolder> {
     private final List<Recipe> recipes;
     private final OnRecipeRowClickListener clickListener;
-    private ImageLoader imageLoader;
+    private final ImageLoader imageLoader;
 
     RecipeListAdapter(ImageLoader imageLoader, List<Recipe> recipes, OnRecipeRowClickListener clickListener) {
         this.recipes = recipes;
@@ -37,22 +37,16 @@ class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.ViewHolde
         viewHolder.recipeText.setText(title);
 
         String thumbnailUrl = recipes.get(position).getThumbnailUrl();
-        if (imageLoader != null) {
-            imageLoader.loadImageAsync(thumbnailUrl,
-                    viewHolder.recipeThumbnailImage,
-                    R.drawable.recipe_placeholder,
-                    120, 60);
-        }
+        imageLoader.loadImageAsync(thumbnailUrl,
+                viewHolder.recipeThumbnailImage,
+                R.drawable.recipe_placeholder,
+                120, 60);
         viewHolder.bind(recipe, clickListener);
     }
 
     @Override
     public int getItemCount() {
         return recipes.size();
-    }
-
-    void setImageLoader(ImageLoader imageLoader) {
-        this.imageLoader = imageLoader;
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {

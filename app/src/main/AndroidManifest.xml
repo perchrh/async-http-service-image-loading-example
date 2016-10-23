@@ -11,24 +11,24 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".RecipeSearchActivity"
-            android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="stateHidden">
+            android:name=".RecipeDetailActivity"
+            android:label="@string/title_activity_recipe_detail"
+            android:parentActivityName=".RecipeListActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="org.digitalsprouts.recipesearch.RecipeListActivity"/>
+        </activity>
+        <activity
+            android:name=".RecipeListActivity"
+            android:label="@string/title_activity_recipe_list"
+            android:windowSoftInputMode="stateHidden"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
-        </activity>
-        <activity
-            android:name=".RecipeDetailActivity"
-            android:label="@string/title_activity_recipe_detail"
-            android:parentActivityName=".RecipeSearchActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="org.digitalsprouts.recipesearch.RecipeSearchActivity"/>
         </activity>
     </application>
 
