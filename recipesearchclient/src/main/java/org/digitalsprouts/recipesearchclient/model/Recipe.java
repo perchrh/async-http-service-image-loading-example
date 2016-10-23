@@ -65,33 +65,34 @@ public class Recipe implements Parcelable {
 
     // Generated setters, used for tests
 
-    void setThumbnailUrl(String thumbnailUrl) {
+    public void setThumbnailUrl(String thumbnailUrl) {
         this.thumbnailUrl = thumbnailUrl;
     }
 
-    void setSourceUrl(String sourceUrl) {
+    public void setSourceUrl(String sourceUrl) {
         this.sourceUrl = sourceUrl;
     }
 
-    void setRecipeUrl(String recipeUrl) {
+    public void setRecipeUrl(String recipeUrl) {
         this.recipeUrl = recipeUrl;
     }
 
-    void setTitle(String title) {
+    public void setTitle(String title) {
         this.title = title;
     }
 
-    void setPublisher(String publisher) {
+    public void setPublisher(String publisher) {
         this.publisher = publisher;
     }
 
-    void setPublisherUrl(String publisherUrl) {
+    public void setPublisherUrl(String publisherUrl) {
         this.publisherUrl = publisherUrl;
     }
 
-    void setSocialRank(Double socialRank) {
+    public void setSocialRank(Double socialRank) {
         this.socialRank = socialRank;
     }
+
 
     // Generated HashCode and equal
 
