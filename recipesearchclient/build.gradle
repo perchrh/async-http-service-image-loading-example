@@ -22,7 +22,7 @@ android {
         versionCode 1
         versionName "1.0"
 
-        buildConfigField 'String', 'F2F_API_KEY', apiKey // avoids storing api key in git
+        buildConfigField 'String', 'F2F_API_KEY', "\"${apiKey}\"" // avoids storing api key in git
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
